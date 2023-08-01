@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# OfflineAsrAndroid
-OfflineAsrAndroid
-=======
 ### 下载安装
 
 项目地址： https://github.com/data-baker/OfflineAsrAndroid
