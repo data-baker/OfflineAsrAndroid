@@ -28,7 +28,6 @@ public class AuthorizeActivity extends AppCompatActivity {
     private AppCompatEditText etClientId;
     private AppCompatEditText etClientSecret;
     private AppCompatButton btnAuthorize;
-    private AppCompatButton btnClean;
 
     private int from;
     private String clientId = "";
@@ -42,12 +41,11 @@ public class AuthorizeActivity extends AppCompatActivity {
         etClientId = findViewById(R.id.et_client_id);
         etClientSecret = findViewById(R.id.et_client_secret);
         btnAuthorize = findViewById(R.id.btn_authorize);
-        btnClean = findViewById(R.id.btn_clean);
+
 
 
         from = getIntent().getIntExtra("from", 1001);
 
-        btnClean.setOnClickListener(view -> Util.cleanAuth(AuthorizeActivity.this));
 
         btnAuthorize.setOnClickListener(view -> {
             if (etClientId.getText() != null) {
