@@ -29,10 +29,7 @@ public class Util {
 
 
 
-   public static void cleanAuth(Context mContext){
-       SharedPreferences sp = mContext.getApplicationContext().getSharedPreferences("baker_offline_voice_convert", Context.MODE_PRIVATE);
-       sp.edit().putString("auth_info", null).apply();
-   }
+
 
 
 

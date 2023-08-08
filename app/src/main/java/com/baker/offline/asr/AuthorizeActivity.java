@@ -29,6 +29,7 @@ public class AuthorizeActivity extends AppCompatActivity {
     private AppCompatEditText etClientSecret;
     private AppCompatButton btnAuthorize;
 
+
     private int from;
     private String clientId = "";
     private String clientSecret = "";
@@ -41,7 +42,6 @@ public class AuthorizeActivity extends AppCompatActivity {
         etClientId = findViewById(R.id.et_client_id);
         etClientSecret = findViewById(R.id.et_client_secret);
         btnAuthorize = findViewById(R.id.btn_authorize);
-
 
 
         from = getIntent().getIntExtra("from", 1001);
