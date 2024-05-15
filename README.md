@@ -1,6 +1,24 @@
+##### 1.0.0 版本
+
+1. 实现麦克风语音识别
+2. 实现文件语音识别
+
+##### 1.1.0版本
+
+1. 增加粤语模型
+2. 增加配置文件地址
+
+
+#### 下载地址
+
+![](/image/demo.png)
+
+
+## 接入文档
+
 ### 下载安装
 
-项目地址： https://github.com/data-baker/OfflineAsrAndroid
+项目地址： https://github.com/data-baker/Android-OfflineASRProject
 
 ### Android Studio 集成 SDK（参考 demo）
 
@@ -26,31 +44,36 @@ dependencies {
 
 或者将对应.jar/.aar 包添加至工程 module 下，lib 文件夹里。 注意：SDK 内使用了 okhttp、gson 所以需要开发者添加以这两个库，若工程内已存在，无需重复添加。okhttp 请使用 4.x 版本，以免出现版本兼容 bug。
 
-**3. 在开放平台下载资源文件，拷贝到assets目录下，注意：资源文件名称不能修改**
+**3. 在github上的model目录下载对应资源文件，放置在对应目录，注意：资源文件名称不能修改**
 
-**4. 在 Module 的 AndroidManifest.xml 文件中添加权限。6.0 以上需要动态申请 RECORD_AUDIO 、WRITE_EXTERNAL_STORAGE
-权限。**
+- commom - 通用中文模型
+- rk3399  - 大屏版本
+- cat - 为粤语版本
+
+**4. 在 Module 的 AndroidManifest.xml 文件中添加权限。6.0 以上需要动态申请 RECORD_AUDIO 权限。**
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
 **5. 关于混淆 **
 SDK 中用到了 okhttp 和 gson，所以需要将这两个包的混淆代码添加上。具 体混淆代码可以去官方文档上查阅。如果项目中已经有这两个包的混淆代码，不 必重复添加。请加上我们 SDK其他类的混淆代码，如下：
 
 ```properties
+-keeppackagenames com.databaker.authorize
 -keep class com.databaker.authorize.AuthorizationType {*;}
 -keep class com.databaker.authorize.AuthorizationScope {*;}
 -keep class com.databaker.authorize.bean.Token {*;}
--keep class com.databaker.authorize.callback.AuthorizationCallback {*;}
+-keep class com.databaker.authorize.callback.* {*;}
 -keep class com.databaker.authorize.BakerAuthorizationEngine {*;}
+-keeppackagenames com.databaker.offlineasr
 -keep class com.k2fsa.sherpa.ncnn.* {*;}
 -keep class com.databaker.offlineasr.ErrorCode {*;}
 -keep class com.databaker.offlineasr.BakerASRManager {*;}
 -keep class com.databaker.offlineasr.callback.* {*;}
+
+
 ```
 
 ### SDK 关键类
@@ -93,17 +116,19 @@ BakerASRManager.getInstance().setASRListener(BakerRecognizerCallback)
 
 BakerASRManager 基本调用方法说明
 
-|      参数      |               参数说明               | 是否必填 |
-| :------------: | :----------------------------------: | :------: |
-|   setContext   |    设置上下文(须initSDK之前调用)     |    是    |
-|    setDebug    |  设置调试模式(须在initSDK之前调用)   |    否    |
-| setNumThreads  | 设置使用CPU核数(须在initSDK之前调用) |    否    |
-|    initSDK     |              初始化SDK               |    是    |
-|  isRecording   |             是否正在录音             |    否    |
-| setASRListener |      设置ASR状态及结果回调方法       |    是    |
-|  startRecord   |             开始ASR转化              |    否    |
-|   stopRecord   |             停止ASR转化              |    否    |
-|    sendData    |             发送音频数据             |    否    |
+|       参数       |                     参数说明                      | 是否必填 |
+| :--------------: | :-----------------------------------------------: | :------: |
+|    setContext    |           设置上下文(须initSDK之前调用)           |    是    |
+|     setDebug     |         设置调试模式(须在initSDK之前调用)         |    否    |
+|  setNumThreads   |       设置使用CPU核数(须在initSDK之前调用)        |    否    |
+|     initSDK      |                     初始化SDK                     |    是    |
+|   isRecording    |                   是否正在录音                    |    否    |
+|  setASRListener  |             设置ASR状态及结果回调方法             |    是    |
+|   startRecord    |                    开始ASR转化                    |    否    |
+|    stopRecord    |                    停止ASR转化                    |    否    |
+|     sendData     |                   发送音频数据                    |    否    |
+| setAssetsManager |             是否使用默认模型文件地址              |    否    |
+|  setParamPaths   | 与setAssetsManager(true)结合使用,配置模型文件地址 |    否    |
 
 BakerAuthorizeCallBack 回调方法说明
 
@@ -140,4 +165,3 @@ BakerRecognizerCallback 回调方法说明
 1. 数据的识别结果展示为乱码怎么办?
 
    答：检查识别的音频格式，要求识别的数据为单声道，16K采样率，16位位深的音频。
-

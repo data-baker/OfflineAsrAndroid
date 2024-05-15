@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,40 +35,12 @@ public class ASRMicActivity extends AppCompatActivity {
         tvContent = findViewById(R.id.tv_content);
         btnRecord = findViewById(R.id.btn_record);
 
-        BakerASRManager.getInstance().setASRListener(new BakerRecognizerCallback() {
-            @Override
-            public void onVolumeChanged(int volume) {
-                Log.e("TAG--->", "onVolumeChanged:" + volume);
-            }
-            @Override
-            public void onResult(boolean endFlag, @NonNull String text) {
-                Log.e("TAG--->", "onResult:" + text);
-                runOnUiThread(() -> {
-                    if (!TextUtils.isEmpty(text)) {
-                        tvContent.setText(text);
-                    }
-                });
-            }
-            @Override
-            public void onBeginOfSpeech() {
-                Log.e("TAG--->", "onBeginOfSpeech");
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-                Log.e("TAG--->", "onEndOfSpeech");
-            }
-
-            @Override
-            public void onError(@NonNull String code, @NonNull String msg) {
-                Log.e("TAG--->", "onError:code--->" + code + "   msg--->" + msg);
-                runOnUiThread(() -> Toast.makeText(ASRMicActivity.this, "code:" + code + "  msg:" + msg, Toast.LENGTH_SHORT).show());
-            }
-        });
+        tvContent.setMovementMethod(new ScrollingMovementMethod());
 
         btnRecord.setOnClickListener(v -> {
             if (!BakerASRManager.getInstance().isRecording()) {
                 BakerASRManager.getInstance().startRecord();
+                tvContent.setText("");
                 btnRecord.setText("停止");
             } else {
                 BakerASRManager.getInstance().stopRecord();
@@ -76,5 +49,49 @@ public class ASRMicActivity extends AppCompatActivity {
         });
 
 
+        BakerASRManager.getInstance().setASRListener(new BakerRecognizerCallback() {
+
+            @Override
+            public void onBeginOfSpeech() {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onVolumeChanged(int volume) {
+
+            }
+
+            @Override
+            public void onResult(boolean endFlag, @NonNull String response) {
+                if (TextUtils.isEmpty(response)) return;
+                if (tvContent.getText() == null || TextUtils.isEmpty(tvContent.getText())) {
+                    tvContent.setText(response);
+                    tvContent.append("\n");
+                } else {
+                    tvContent.append(response);
+                    tvContent.append("\n");
+                }
+            }
+
+            @Override
+            public void onError(@NonNull String errorCode, @NonNull String errorMsg) {
+                Log.e("TAG--->", "errorCode:" + errorCode + " errorMsg:" + errorMsg);
+                Toast.makeText(ASRMicActivity.this, "errorCode:" + errorCode + "errorMsg:" + errorMsg, Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        BakerASRManager.getInstance().release();
+        super.onBackPressed();
     }
 }

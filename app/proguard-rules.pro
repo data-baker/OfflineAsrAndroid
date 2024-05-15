@@ -20,11 +20,13 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keeppackagenames com.databaker.authorize
 -keep class com.databaker.authorize.AuthorizationType {*;}
 -keep class com.databaker.authorize.AuthorizationScope {*;}
 -keep class com.databaker.authorize.bean.Token {*;}
--keep class com.databaker.authorize.callback.AuthorizationCallback {*;}
+-keep class com.databaker.authorize.callback.* {*;}
 -keep class com.databaker.authorize.BakerAuthorizationEngine {*;}
+-keeppackagenames com.databaker.offlineasr
 -keep class com.k2fsa.sherpa.ncnn.* {*;}
 -keep class com.databaker.offlineasr.ErrorCode {*;}
 -keep class com.databaker.offlineasr.BakerASRManager {*;}
