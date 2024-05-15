@@ -84,13 +84,7 @@ public class AuthorizeActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull String errorCode, @NonNull String errorMsg) {
-                        if (ErrorCode.INIT_ERROR.getErrorCode().equals(errorCode)) {
-                            if (isMic) {
-                                ASRMicActivity.start(AuthorizeActivity.this);
-                            } else {
-                                ASRFileActivity.start(AuthorizeActivity.this);
-                            }
-                        } else {
+                        if (!ErrorCode.INIT_ERROR.getErrorCode().equals(errorCode)) {
                             Toast.makeText(AuthorizeActivity.this, "errorMsg：" + errorMsg, Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -124,13 +118,8 @@ public class AuthorizeActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull String errorCode, @NonNull String errorMsg) {
-                        if (ErrorCode.INIT_ERROR.getErrorCode().equals(errorCode)) {
-                            if (isMic) {
-                                ASRMicActivity.start(AuthorizeActivity.this);
-                            } else {
-                                ASRFileActivity.start(AuthorizeActivity.this);
-                            }
-                        } else {
+                        if (!ErrorCode.INIT_ERROR.getErrorCode().equals(errorCode)) {
+
                             Toast.makeText(AuthorizeActivity.this, "errorMsg：" + errorMsg, Toast.LENGTH_SHORT).show();
                         }
                     }

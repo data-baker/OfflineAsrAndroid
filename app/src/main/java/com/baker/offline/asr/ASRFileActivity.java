@@ -86,7 +86,7 @@ public class ASRFileActivity extends AppCompatActivity {
                 byte[] buffer = new byte[5120];
                 while (inputStream.read(buffer) != -1) {
                     BakerASRManager.getInstance().sendData(buffer);
-                    Thread.sleep(200);
+                    Thread.sleep(100);
                 }
                 inputStream.close();
             } catch (IOException | InterruptedException e) {
